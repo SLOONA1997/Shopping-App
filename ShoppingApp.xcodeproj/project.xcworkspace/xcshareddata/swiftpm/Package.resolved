@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "iglistkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Instagram/IGListKit.git",
+      "state" : {
+        "revision" : "36da20119ca70c0a8b46ef0acc93b3bcb5a9ea69",
+        "version" : "4.0.0"
+      }
+    },
+    {
+      "identity" : "mbprogresshud",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jdg/MBProgressHUD.git",
+      "state" : {
+        "revision" : "bca42b801100b2b3a4eda0ba8dd33d858c780b0d",
+        "version" : "1.2.0"
+      }
+    }
+  ],
+  "version" : 2
+}

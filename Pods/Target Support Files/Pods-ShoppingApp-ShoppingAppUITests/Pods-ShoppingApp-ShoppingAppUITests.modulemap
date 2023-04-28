@@ -1,0 +1,6 @@
+framework module Pods_ShoppingApp_ShoppingAppUITests {
+  umbrella header "Pods-ShoppingApp-ShoppingAppUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
