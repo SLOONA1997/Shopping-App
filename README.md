@@ -1,4 +1,9 @@
 # Shopping-App!
+
+Language: Swift 5
+Tools: XCode
+API: https://fakeapi.platzi.com/
+
   ![Simulator Screen Shot - iPhone 14 Pro - 2023-04-29 at 00 14 53](https://user-images.githubusercontent.com/30918808/235230225-c992cf19-cfe8-4ded-b973-47dbf71b1bf0.png)
   ![Simulator Screen Shot - iPhone 14 Pro - 2023-04-29 at 00 14 58](https://user-images.githubusercontent.com/30918808/235229773-33ec7a13-cd01-4697-902d-e34de640493d.png)
  
