@@ -18,6 +18,13 @@ class EmbededHomeSectionController: ListSectionController, ListAdapterDataSource
         return listAdapter
     }()
     
+    var callback: HomeToProductListingHandler?
+    
+    init(callback: HomeToProductListingHandler? = nil) {
+        super.init()
+        self.callback = callback
+    }
+    
     //MARK: - Collection Delegates
     
     override func numberOfItems() -> Int {
@@ -48,7 +55,7 @@ class EmbededHomeSectionController: ListSectionController, ListAdapterDataSource
     }
     
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
-        return CategoriesSectionController()
+        return CategoriesSectionController(callback: callback)
     }
     
     func emptyView(for listAdapter: ListAdapter) -> UIView? {

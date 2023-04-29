@@ -120,7 +120,7 @@ extension APIError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidUrl, .invalidRequestData, .invalidResponse:
-            return localizedDescription
+            return "An unknown error occured."
         case .message(let string):
             return string
         }
@@ -231,10 +231,12 @@ final class APIManager {
         guard let responseJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
             return "JSON Serializaton Error"
         }
-        guard let messages = responseJson["message"] as? [String], !messages.isEmpty else {
-            return nil
+        if let messages = responseJson["message"] as? [String], !messages.isEmpty {
+            return messages.joined(separator: "\n")
+        } else if let messages = responseJson["message"] as? String {
+            return messages
         }
-        return messages.joined(separator: "\n")
+        return nil
     }
     
     /// To generate boundary for multipart API

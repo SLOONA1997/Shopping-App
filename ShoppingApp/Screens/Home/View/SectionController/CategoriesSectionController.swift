@@ -12,8 +12,11 @@ class CategoriesSectionController: ListSectionController {
     
     private var categories: [Category]?
     
-    override init() {
+    var callback: HomeToProductListingHandler?
+    
+    init(callback: HomeToProductListingHandler? = nil) {
         super.init()
+        self.callback = callback
         inset = .init(top: 0, left: 20, bottom: 0, right: 0)
     }
     
@@ -39,5 +42,9 @@ class CategoriesSectionController: ListSectionController {
         let height = (collectionContext?.containerSize.height ?? 0.0)
         let width = (collectionContext?.containerSize.width ?? 0.0) * 0.4
         return .init(width: width, height: height)
+    }
+    
+    override func didSelectItem(at index: Int) {
+        callback?(index)
     }
 }

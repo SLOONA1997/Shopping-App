@@ -10,6 +10,9 @@ import UIKit
 class HomeCollectionHeaderCell: UICollectionViewCell {
     //MARK: - Outlets
     @IBOutlet private weak var titleLabel: UILabel?
+    @IBOutlet weak var seeAllBtn: UIButton?
+    
+    var seeAllCallBack: ((Int?)-> ())?
 
     var title: String {
         get {
@@ -21,6 +24,6 @@ class HomeCollectionHeaderCell: UICollectionViewCell {
     }
     //MARK: - Actions
     @IBAction func seeAllClicked() {
-        
+        seeAllCallBack?(nil)
     }
 }

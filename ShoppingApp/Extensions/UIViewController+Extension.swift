@@ -27,6 +27,29 @@ extension UIViewController {
         }
     }
     
+    func showActionsheet(title:String,
+                              message: String,
+                              buttons:[String],
+                              tapBlock: ((Int) -> Void)?) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: buttons[0], style: .default , handler:{ (UIAlertAction)in
+            if let block = tapBlock {
+                block(0)
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: buttons[1], style: .destructive , handler:{ (UIAlertAction)in
+            if let block = tapBlock {
+                block(1)
+            }
+        }))
+        
+        self.present(alert, animated: true, completion: {
+            print("completion block")
+        })
+    }
+    
     @IBAction func backAction() {
         self.navigationController?.popViewController(animated: true)
     }

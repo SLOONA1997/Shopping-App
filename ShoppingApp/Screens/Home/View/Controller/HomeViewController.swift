@@ -8,10 +8,13 @@
 import UIKit
 import IGListKit
 
+typealias HomeToProductListingHandler = (Int?)->()
+
 class HomeViewController: UIViewController {
     //MARK: - Outlets
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var containerViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var menuCrossbtn: UIButton!
     
     lazy var adapter: ListAdapter = {
         let listAdapter = ListAdapter(updater: ListAdapterUpdater(), viewController: self)
@@ -19,6 +22,8 @@ class HomeViewController: UIViewController {
         listAdapter.dataSource = self
         return listAdapter
     }()
+    
+    var homeToProductsListingHandler: HomeToProductListingHandler?
     
     var screenWidth: CGFloat {
         return self.view.bounds.width
@@ -54,6 +59,24 @@ class HomeViewController: UIViewController {
             }
         }
         viewModel = HomeViewModel(eventHandler: handler)
+        
+        //Handler for Home to products listing transition
+        homeToProductsListingHandler = {[weak self] selectedIndex in
+            guard let self = self else { return }
+            let category: Category?
+            if let selectedIndex = selectedIndex {
+                category = self.viewModel?.categories?[safe: selectedIndex]
+            } else {
+                category = nil
+            }
+            self.performSegue(withIdentifier: "HomeToProductsList", sender: category)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let category = sender as? Category, let destVc = segue.destination as? ProductsListingViewController {
+            destVc.viewModel.category = category
+        }
     }
     
     @IBAction func menuAction(button: UIButton) {
@@ -63,9 +86,24 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @IBAction func logoutAction() {
-        UserSession.shared.clearSession()
-        UserSession.shared.checkIfUserLoggedIn()
+    @IBAction func menuOptionClicked(button: UIButton) {
+        guard let type = MenuType(rawValue: button.tag) else {
+            return
+        }
+        switch type {
+        case .home:
+            menuAction(button: menuCrossbtn)
+        case .logout:
+            showActionsheet(title: "Log Out", message: "Are you sure you want to logout?", buttons: ["Cancel","LogOut"]) { selectedIndex in
+                if selectedIndex == 1 {
+                    UserSession.shared.clearSession()
+                    UserSession.shared.checkIfUserLoggedIn()
+                }
+            }
+        default:
+            showAlert(message: "Feature coming soon")
+        }
+        
     }
 
 }
@@ -79,11 +117,13 @@ extension HomeViewController: ListAdapterDataSource {
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         switch object {
         case let obj where obj is String:
-            return HomePageListTitleSectionController()
+            let homePageTitleSection = HomePageListTitleSectionController()
+            homePageTitleSection.seeAllCallBack = homeToProductsListingHandler
+            return homePageTitleSection
         case let obj where obj is ProductListModel:
             return ProductsCollectionSectionController()
         case let obj where obj is CategoryListModel:
-            return EmbededHomeSectionController()
+            return EmbededHomeSectionController(callback: homeToProductsListingHandler)
         default:
             return ListSectionController()
         }

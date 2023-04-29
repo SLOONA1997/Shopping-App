@@ -12,6 +12,8 @@ class HomePageListTitleSectionController: ListSectionController {
     
     private var title: String?
     
+    var seeAllCallBack: ((Int?)-> ())?
+    
     override func didUpdate(to object: Any) {
         self.title = object as? String
         
@@ -24,6 +26,8 @@ class HomePageListTitleSectionController: ListSectionController {
     override func cellForItem(at index: Int) -> UICollectionViewCell {
         let cell: HomeCollectionHeaderCell = collectionContext?.dequeueReusableCellFromStoryboard(withIdentifier: "HomeCollectionHeaderCell", for: self, at: index) as! HomeCollectionHeaderCell
         cell.title = title ?? "N/A"
+        cell.seeAllBtn?.isHidden = title == "Categories"
+        cell.seeAllCallBack = seeAllCallBack
         return cell
     }
     
