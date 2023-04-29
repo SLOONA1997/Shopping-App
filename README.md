@@ -14,9 +14,7 @@
 Here're some of the project's best features:
 
 *   User Authentication
-*   Products
-*   Categories
-
+*   Products Listing
   
   
 <h2>💻 Built with</h2>
